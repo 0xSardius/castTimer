@@ -1,38 +1,41 @@
 import { Metadata } from "next";
-import App from "./app";
+import CastTimer from "./components/CastTimer";
 
 const appUrl = process.env.NEXT_PUBLIC_URL;
 
 const frame = {
   version: "next",
-  imageUrl: `${appUrl}/opengraph-image`,
-  button: {
-    title: "Launch Frame",
-    action: {
-      type: "launch_frame",
-      name: "Farcaster Frames v2 Demo",
-      url: appUrl,
-      splashImageUrl: `${appUrl}/splash.png`,
-      splashBackgroundColor: "#f7f7f7",
-    },
+  image: {
+    src: `${appUrl}/opengraph-image`,
+    aspectRatio: "1.91:1",
   },
+  buttons: [
+    {
+      label: "⏰ Set Timer",
+    },
+  ],
+  postUrl: `${appUrl}/api/frame`,
 };
 
 export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Farcaster Frames v2 Demo",
+    title: "CastTimer",
+    description: "Smart reminders for Farcaster threads",
     openGraph: {
-      title: "Farcaster Frames v2 Demo",
-      description: "A Farcaster Frames v2 demo app.",
+      title: "CastTimer",
+      description: "Never miss an important thread update",
     },
     other: {
       "fc:frame": JSON.stringify(frame),
+      "fc:frame:image": `${appUrl}/opengraph-image`,
+      "fc:frame:button:1": "⏰ Set Timer",
+      "fc:frame:post_url": `${appUrl}/api/frame`,
     },
   };
 }
 
 export default function Home() {
-  return (<App />);
+  return <CastTimer />;
 }
